@@ -92,7 +92,7 @@ jobs:
       - name: Redeploy HCW through Coolify
         if: inputs.deploy && (inputs.scope == 'hcw' || inputs.scope == 'both')
         env:
-          COOLIFY_BASE_URL: ${{ vars.COOLIFY_BASE_URL }}
+          COOLIFY_BASE_URL: ${{ vars.COOLIFY_BASE_URL || secrets.COOLIFY_BASE_URL }}
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
           COOLIFY_SERVICE_UUID: ${{ secrets.COOLIFY_HCW_SERVICE_UUID }}
         run: bash ./scripts/ci/coolify-deploy.sh "HCW rollback"
@@ -106,7 +106,7 @@ jobs:
       - name: Redeploy WaruWenJo through Coolify
         if: inputs.deploy && (inputs.scope == 'waruwenjo' || inputs.scope == 'both')
         env:
-          COOLIFY_BASE_URL: ${{ vars.COOLIFY_BASE_URL }}
+          COOLIFY_BASE_URL: ${{ vars.COOLIFY_BASE_URL || secrets.COOLIFY_BASE_URL }}
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
           COOLIFY_SERVICE_UUID: ${{ secrets.COOLIFY_WARUWENJO_SERVICE_UUID }}
         run: bash ./scripts/ci/coolify-deploy.sh "WaruWenJo rollback"
