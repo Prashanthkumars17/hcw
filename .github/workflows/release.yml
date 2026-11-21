@@ -154,6 +154,7 @@ jobs:
     needs: [detect, publish]
     if: needs.detect.outputs.deploy_hcw == 'true' && inputs.skip_deploy != true
     runs-on: ubuntu-latest
+    environment: production
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
@@ -161,7 +162,7 @@ jobs:
       - name: Trigger Coolify deployment and wait for completion
         id: deploy
         env:
-          COOLIFY_BASE_URL: ${{ vars.COOLIFY_BASE_URL }}
+          COOLIFY_BASE_URL: ${{ vars.COOLIFY_BASE_URL || secrets.COOLIFY_BASE_URL }}
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
           COOLIFY_SERVICE_UUID: ${{ secrets.COOLIFY_HCW_SERVICE_UUID }}
         run: bash ./scripts/ci/coolify-deploy.sh "HCW"
@@ -199,6 +200,7 @@ jobs:
     needs: [detect, publish]
     if: needs.detect.outputs.deploy_waruwenjo == 'true' && inputs.skip_deploy != true
     runs-on: ubuntu-latest
+    environment: production
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
@@ -206,7 +208,7 @@ jobs:
       - name: Trigger Coolify deployment and wait for completion
         id: deploy
         env:
-          COOLIFY_BASE_URL: ${{ vars.COOLIFY_BASE_URL }}
+          COOLIFY_BASE_URL: ${{ vars.COOLIFY_BASE_URL || secrets.COOLIFY_BASE_URL }}
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
           COOLIFY_SERVICE_UUID: ${{ secrets.COOLIFY_WARUWENJO_SERVICE_UUID }}
         run: bash ./scripts/ci/coolify-deploy.sh "WaruWenJo"
