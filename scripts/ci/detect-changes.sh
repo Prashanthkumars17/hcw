@@ -57,21 +57,11 @@ if changed '^backend/'; then backend=true; fi
 if changed '^patient/'; then patient=true; fi
 if changed '^practitioner/'; then practitioner=true; fi
 
-# waruwenjo/dist, waruwenjo/node_modules and waruwenjo/.angular are committed
-# build artefacts in this repository and are not image inputs.
+# waruwenjo/node_modules and waruwenjo/.angular are ignored.
 if grep -E '^waruwenjo/' "$files" \
-  | grep -vE '^waruwenjo/(dist|node_modules|\.angular)/' \
+  | grep -vE '^waruwenjo/(node_modules|\.angular)/' \
   | grep -q .; then
   waruwenjo=true
-fi
-
-# The WaruWenJo Angular workspace is not committed in this repository (only a
-# prebuilt dist/ and one spec file exist), so its image cannot be built yet.
-# Skipping it keeps releases green; remove this guard once the sources land.
-if [ "$waruwenjo" = "true" ] \
-  && { [ ! -f waruwenjo/package.json ] || [ ! -f waruwenjo/angular.json ]; }; then
-  echo "::warning::waruwenjo sources are incomplete (package.json/angular.json missing); skipping hcw6-waruwenjo."
-  waruwenjo=false
 fi
 
 entries=()

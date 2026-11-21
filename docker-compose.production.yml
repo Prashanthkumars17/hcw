@@ -152,7 +152,7 @@ services:
     depends_on:
       - api
     ports:
-      - "8080:8080"
+      - "8084:8080"
 
   db:
     image: docker.io/postgres:15
