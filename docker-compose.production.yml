@@ -90,6 +90,15 @@ services:
     restart: always
     pull_policy: always
     environment: *backend-runtime-env
+    networks:
+      - default
+      - coolify
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hcw-api.rule=Host(`api.waruwenjo.com`)"
+      - "traefik.http.routers.hcw-api.entrypoints=https"
+      - "traefik.http.routers.hcw-api.tls.certresolver=letsencrypt"
+      - "traefik.http.services.hcw-api.loadbalancer.server.port=8000"
     depends_on:
       redis:
         condition: service_healthy
@@ -102,6 +111,15 @@ services:
     pull_policy: always
     environment:
       BACKEND_URL: "http://api:8000"
+    networks:
+      - default
+      - coolify
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hcw-admin.rule=Host(`adminconsult.waruwenjo.com`)"
+      - "traefik.http.routers.hcw-admin.entrypoints=https"
+      - "traefik.http.routers.hcw-admin.tls.certresolver=letsencrypt"
+      - "traefik.http.services.hcw-admin.loadbalancer.server.port=8080"
     depends_on:
       - api
     ports:
@@ -138,6 +156,15 @@ services:
     pull_policy: always
     environment:
       BACKEND_URL: "http://api:8000"
+    networks:
+      - default
+      - coolify
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hcw-patient.rule=Host(`user.waruwenjo.com`)"
+      - "traefik.http.routers.hcw-patient.entrypoints=https"
+      - "traefik.http.routers.hcw-patient.tls.certresolver=letsencrypt"
+      - "traefik.http.services.hcw-patient.loadbalancer.server.port=8081"
     depends_on:
       - api
     ports:
@@ -149,6 +176,15 @@ services:
     pull_policy: always
     environment:
       BACKEND_URL: "http://api:8000"
+    networks:
+      - default
+      - coolify
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hcw-practitioner.rule=Host(`consult.waruwenjo.com`) || Host(`doctor.waruwenjo.com`)"
+      - "traefik.http.routers.hcw-practitioner.entrypoints=https"
+      - "traefik.http.routers.hcw-practitioner.tls.certresolver=letsencrypt"
+      - "traefik.http.services.hcw-practitioner.loadbalancer.server.port=8080"
     depends_on:
       - api
     ports:
@@ -179,3 +215,8 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+
+networks:
+  default:
+  coolify:
+    external: true
