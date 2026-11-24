@@ -18,5 +18,19 @@ services:
     pull_policy: always
     environment:
       BACKEND_URL: "${WWJ_BACKEND_URL:?WWJ_BACKEND_URL}"
+    networks:
+      - default
+      - coolify
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wwj-wrapper.rule=Host(`consult.waruwenjo.com`)"
+      - "traefik.http.routers.wwj-wrapper.entrypoints=https"
+      - "traefik.http.routers.wwj-wrapper.tls.certresolver=letsencrypt"
+      - "traefik.http.services.wwj-wrapper.loadbalancer.server.port=8080"
     ports:
       - "8083:8080"
+
+networks:
+  default:
+  coolify:
+    external: true

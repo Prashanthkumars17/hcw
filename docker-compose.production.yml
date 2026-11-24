@@ -181,7 +181,7 @@ services:
       - coolify
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.hcw-practitioner.rule=Host(`consult.waruwenjo.com`) || Host(`doctor.waruwenjo.com`)"
+      - "traefik.http.routers.hcw-practitioner.rule=Host(`doctor.waruwenjo.com`)"
       - "traefik.http.routers.hcw-practitioner.entrypoints=https"
       - "traefik.http.routers.hcw-practitioner.tls.certresolver=letsencrypt"
       - "traefik.http.services.hcw-practitioner.loadbalancer.server.port=8080"
